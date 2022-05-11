@@ -4,7 +4,7 @@ Some runners follow a plan to help them best prepare for an event or goal. These
 # Getting Started
 With Python3 installed, clone repo. 
 
-From command prompt see **Usage**.
+From command prompt see [Usage](#Usage).
 
 # Prerequisites
 Python 3
@@ -104,10 +104,6 @@ See LICENSE (MIT)
 
 # Contact
 ryan dot l as in lima dot miller at icloud dot com
-
-# Acknowledgments
-
-In 2018, amazeballs running couple [David Roche](https://twitter.com/MountainRoche) and [Megan Roche](https://twitter.com/meg_runs_happy) wrote [The Happy Runner: Love the Process, Get Faster, Run Longer](https://www.amazon.com/Happy-Runner-Process-Faster-Longer/dp/1492567647).
 
 
 
