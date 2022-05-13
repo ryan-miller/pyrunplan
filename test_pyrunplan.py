@@ -25,3 +25,25 @@ class Test:
         rp.planLength = 5
         rp.calculate()
         assert len(rp.plan) == 5
+
+    def test_hasStartMinutes(self, rp):
+        assert rp.startMinutes != None
+
+    def test_canSetStartMinutes(self, rp):
+        rp.startMinutes = 240
+        assert rp.startMinutes == 240
+
+    def test_canGetWeekOne(self, rp):
+        rp.planLength = 1
+        rp.calculate()
+        assert rp.week(0) == {'totalMinutes': 0}
+
+    def test_weekZeroTotalMinutesAfterCalculateIsStartMinutes(self, rp):
+        rp.startMinutes = 30
+        rp.calculate()
+        assert rp.week(0).get("totalMinutes") == 30
+    
+    def test_weekThreeTotalMinutesAfterCalculateIsStartMinutes(self, rp):
+        rp.startMinutes = 30
+        rp.calculate()
+        assert rp.week(3).get("totalMinutes") == 30
