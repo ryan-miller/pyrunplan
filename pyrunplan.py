@@ -4,6 +4,7 @@ class PyRunPlan:
         self._planLength = 4
         self._plan = list()
         self._startMinutes = 0
+        self._buildFactor = 1.1
 
     @property
     def plan(self):
@@ -23,11 +24,18 @@ class PyRunPlan:
     def startMinutes(self, value):
         self._startMinutes = value
 
+    @property
+    def buildFactor(self):
+        return self._buildFactor
+    @buildFactor.setter
+    def buildFactor(self, value):
+        self._buildFactor = value
+
     def calculate(self):
 
         for x in range(self.planLength):
             temp = dict()
-            temp["totalMinutes"] = self.startMinutes
+            temp["totalMinutes"] = self.startMinutes * self.buildFactor
             self.plan.append(temp)
 
         return self.plan

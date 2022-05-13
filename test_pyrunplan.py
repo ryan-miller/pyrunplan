@@ -47,3 +47,12 @@ class Test:
         rp.startMinutes = 30
         rp.calculate()
         assert rp.week(3).get("totalMinutes") == 30
+
+    def test_hasBuildFactor(self, rp):
+        assert rp.buildFactor != None
+    
+    def test_weekOneTotalMinutesAfterCalculateIsOneHundredTwentyPercentOfWeekZero(self, rp):
+        rp.startMinutes = 30
+        rp.buildFactor = 1.2
+        rp.calculate()
+        assert rp.week(1).get("totalMinutes") == 36
