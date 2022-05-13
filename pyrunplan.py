@@ -26,7 +26,6 @@ class PyRunPlan:
     def calculate(self):
 
         for x in range(self.planLength):
-            print(x)
             temp = dict()
             temp["totalMinutes"] = self.startMinutes
             self.plan.append(temp)
