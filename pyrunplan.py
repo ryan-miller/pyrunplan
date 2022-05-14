@@ -32,10 +32,13 @@ class PyRunPlan:
         self._buildFactor = value
 
     def calculate(self):
+        minutes = self.startMinutes
 
         for x in range(self.planLength):
+            if x > 0:
+                minutes = minutes * self.buildFactor
             temp = dict()
-            temp["totalMinutes"] = self.startMinutes * self.buildFactor
+            temp["totalMinutes"] = int(minutes)
             self.plan.append(temp)
 
         return self.plan
