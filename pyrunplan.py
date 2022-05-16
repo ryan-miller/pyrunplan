@@ -5,6 +5,7 @@ class PyRunPlan:
         self._plan = list()
         self._startMinutes = 0
         self._buildFactor = 1.1
+        self._minMinutes = 60
 
     @property
     def plan(self):
@@ -31,15 +32,26 @@ class PyRunPlan:
     def buildFactor(self, value):
         self._buildFactor = value
 
+    @property
+    def minMinutes(self):
+        return self._minMinutes
+    @minMinutes.setter
+    def minMinutes(self, value):
+        self._minMinutes = value
+
     def calculate(self):
-        minutes = self.startMinutes
+
+        if self.startMinutes < self.minMinutes:
+            minutes = self.minMinutes
+        else:
+            minutes = self.startMinutes
 
         for x in range(self.planLength):
             if x > 0:
                 minutes = minutes * self.buildFactor
-            temp = dict()
-            temp["totalMinutes"] = int(minutes)
-            self.plan.append(temp)
+            weekDetails = dict()
+            weekDetails["totalMinutes"] = int(minutes)
+            self.plan.append(weekDetails)
 
         return self.plan
 
