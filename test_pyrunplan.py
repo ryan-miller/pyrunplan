@@ -36,18 +36,18 @@ class Test:
     def test_canGetWeekOne(self, rp):
         rp.planLength = 1
         rp.calculate()
-        assert rp.week(0) == {'totalMinutes': 0}
+        assert rp.week(0) == {'totalMinutes': 60}
 
     def test_weekZeroTotalMinutesAfterCalculateIsStartMinutes(self, rp):
         rp.startMinutes = 30
         rp.calculate()
-        assert rp.week(0).get("totalMinutes") == 30
+        assert rp.week(0).get("totalMinutes") == 60
     
     def test_weekThreeTotalMinutesAfterCalculateIsStartMinutes(self, rp):
         rp.startMinutes = 30
         rp.buildFactor = 1.1
         rp.calculate()
-        assert rp.week(3).get("totalMinutes") == 39
+        assert rp.week(3).get("totalMinutes") == 79
 
     def test_hasBuildFactor(self, rp):
         assert rp.buildFactor != None
@@ -56,4 +56,22 @@ class Test:
         rp.startMinutes = 30
         rp.buildFactor = 1.2
         rp.calculate()
-        assert rp.week(1).get("totalMinutes") == 36
+        assert rp.week(1).get("totalMinutes") == 72
+
+    def test_hasMinimumMinutes(self, rp):
+        rp.minMinutes = 180
+        rp.calculate()
+        assert rp.minMinutes != None
+    
+    def test_totalMinutesIsNeverLessThanMinMinutes(self, rp):
+        rp.minMinutes = 180
+        rp.startMinutes = 240
+        rp.calculate()
+        for x in range(rp.planLength):
+            assert rp.week(x).get("totalMinutes") >= rp.minMinutes
+    
+    def test_whenTotalMinutesIsLessThanMinMinutesTotalMinutesIsSetToMinMinutes(self, rp):
+        rp.minMinutes = 300
+        rp.startMinutes = 100
+        rp.calculate()
+        assert rp.week(0).get("totalMinutes") == rp.minMinutes
