@@ -75,3 +75,12 @@ class Test:
         rp.startMinutes = 100
         rp.calculate()
         assert rp.week(0).get("totalMinutes") == rp.minMinutes
+
+    def test_hasMaximumMinutes(self, rp):
+        rp.maxMinutes = 240
+
+    def test_totalMinutesIsCappedAtMaxMinutes(self, rp):
+        rp.maxMinutes = 800
+        rp.startMinutes = 900
+        rp.calculate()
+        assert rp.week(0).get("totalMinutes") == rp.maxMinutes
