@@ -12,14 +12,14 @@ class Test:
         assert type(rp) is PyRunPlan
 
     def test_hasPlanLength(self, rp):
-        assert rp.planLength != None
+        assert PyRunPlan.planLength
 
     def test_canSetPlanLength(self, rp):
         rp.planLength = 4
         assert rp.planLength == 4
 
     def test_hasPlan(self, rp):
-        assert rp.plan != None
+        assert PyRunPlan.plan
     
     def test_lengthOfPlanIsPlanLength(self, rp):
         rp.planLength = 5
@@ -27,7 +27,7 @@ class Test:
         assert len(rp.plan) == 5
 
     def test_hasStartMinutes(self, rp):
-        assert rp.startMinutes != None
+        assert PyRunPlan.startMinutes
 
     def test_canSetStartMinutes(self, rp):
         rp.startMinutes = 240
@@ -36,32 +36,36 @@ class Test:
     def test_canGetWeekOne(self, rp):
         rp.planLength = 1
         rp.calculate()
-        assert rp.week(0) == {'totalMinutes': 60}
+        assert rp.week(0) == {'totalMinutes': rp.startMinutes}
 
     def test_weekZeroTotalMinutesAfterCalculateIsStartMinutes(self, rp):
         rp.startMinutes = 30
+        rp.minMinutes = 15
         rp.calculate()
-        assert rp.week(0).get("totalMinutes") == 60
+        assert rp.week(0).get("totalMinutes") == rp.startMinutes
     
     def test_weekThreeTotalMinutesAfterCalculateIsStartMinutes(self, rp):
         rp.startMinutes = 30
+        rp.minMinutes = 15
         rp.buildFactor = 1.1
         rp.calculate()
-        assert rp.week(3).get("totalMinutes") == 79
+        expectedMinutes = int(rp.startMinutes * rp.buildFactor * rp.buildFactor * rp.buildFactor)
+        assert rp.week(3).get("totalMinutes") == expectedMinutes
 
     def test_hasBuildFactor(self, rp):
-        assert rp.buildFactor != None
+        assert PyRunPlan.buildFactor
     
     def test_weekOneTotalMinutesAfterCalculateIsOneHundredTwentyPercentOfWeekZero(self, rp):
         rp.startMinutes = 30
+        rp.minMinutes = 15
         rp.buildFactor = 1.2
         rp.calculate()
-        assert rp.week(1).get("totalMinutes") == 72
+        expectedMinutes = int(rp.startMinutes * rp.buildFactor)
+        assert rp.week(1).get("totalMinutes") == expectedMinutes
 
     def test_hasMinimumMinutes(self, rp):
-        rp.minMinutes = 180
-        rp.calculate()
-        assert rp.minMinutes != None
+        assert PyRunPlan.minMinutes
+
     
     def test_totalMinutesIsNeverLessThanMinMinutes(self, rp):
         rp.minMinutes = 180
@@ -77,10 +81,13 @@ class Test:
         assert rp.week(0).get("totalMinutes") == rp.minMinutes
 
     def test_hasMaximumMinutes(self, rp):
-        rp.maxMinutes = 240
+        assert PyRunPlan.maxMinutes
 
     def test_totalMinutesIsCappedAtMaxMinutes(self, rp):
         rp.maxMinutes = 800
         rp.startMinutes = 900
         rp.calculate()
         assert rp.week(0).get("totalMinutes") == rp.maxMinutes
+
+    def test_hasBlockSize(self, rp):
+        assert PyRunPlan.blockSize

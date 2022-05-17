@@ -3,10 +3,11 @@ class PyRunPlan:
     def __init__(self):
         self._planLength = 4
         self._plan = list()
-        self._startMinutes = 0
-        self._buildFactor = 1.1
-        self._minMinutes = 60
+        self._startMinutes = 240
+        self._buildFactor = 1.2
+        self._minMinutes = 240
         self._maxMinutes = 600
+        self._blockSize = 4
 
     @property
     def plan(self):
@@ -46,6 +47,13 @@ class PyRunPlan:
     @maxMinutes.setter
     def maxMinutes(self, value):
         self._maxMinutes = value
+    
+    @property
+    def blockSize(self):
+        return self._blockSize
+    @blockSize.setter
+    def blockSize(self, value):
+        self._blockSize = value
 
     def calculate(self):
 
