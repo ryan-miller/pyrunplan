@@ -44,18 +44,15 @@ class Test:
         rp.calculate()
         assert rp.week(0).get("totalMinutes") == rp.startMinutes
     
-    def test_weekThreeTotalMinutesAfterCalculateIsStartMinutes(self, rp):
-        rp.startMinutes = 30
-        rp.minMinutes = 15
-        rp.buildFactor = 1.1
+    def test_defaultWeekThreeTotalMinutesAfterCalculateIs345(self, rp):
         rp.calculate()
-        expectedMinutes = int(rp.startMinutes * rp.buildFactor * rp.buildFactor * rp.buildFactor)
-        assert rp.week(3).get("totalMinutes") == expectedMinutes
+        expectedMinutes = int(rp.startMinutes * rp.buildFactor * rp.buildFactor)
+        assert rp.week(2).get("totalMinutes") == expectedMinutes
 
     def test_hasBuildFactor(self, rp):
         assert PyRunPlan.buildFactor
     
-    def test_weekOneTotalMinutesAfterCalculateIsOneHundredTwentyPercentOfWeekZero(self, rp):
+    def test_weekTwoTotalMinutesAfterCalculateIsOneHundredTwentyPercentOfWeekOne(self, rp):
         rp.startMinutes = 30
         rp.minMinutes = 15
         rp.buildFactor = 1.2
@@ -91,3 +88,15 @@ class Test:
 
     def test_hasBlockSize(self, rp):
         assert PyRunPlan.blockSize
+
+    def test_hasRecoveryFactor(self, rp):
+        assert PyRunPlan.recoveryFactor
+
+    def test_recoveryFactorDefaultIs0point85(self, rp):
+        assert rp.recoveryFactor == 0.85
+
+    def test_defaultWeekFourRecoveryFactor(self, rp):
+        rp.blockSize = 4
+        rp.calculate()
+        expectedMinutes = int(rp.startMinutes * rp.buildFactor * rp.buildFactor * rp.recoveryFactor)
+        assert rp.week(3).get("totalMinutes") == expectedMinutes
