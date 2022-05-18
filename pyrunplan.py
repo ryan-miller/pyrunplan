@@ -8,6 +8,7 @@ class PyRunPlan:
         self._minMinutes = 240
         self._maxMinutes = 600
         self._blockSize = 4
+        self._recoveryFactor = 0.85
 
     @property
     def plan(self):
@@ -55,25 +56,38 @@ class PyRunPlan:
     def blockSize(self, value):
         self._blockSize = value
 
+    @property
+    def recoveryFactor(self):
+        return self._recoveryFactor
+    @recoveryFactor.setter
+    def recoveryFactor(self, value):
+        self._recoveryFactor = value
+
     def calculate(self):
 
         if self.startMinutes < self.minMinutes:
             minutes = self.minMinutes
+        elif self.startMinutes > self.maxMinutes:
+            minutes = self.maxMinutes
         else:
             minutes = self.startMinutes
 
         for x in range(self.planLength):
 
             if x > 0:
-                minutes = minutes * self.buildFactor
-                
-            if minutes > self.maxMinutes:
-                minutes = self.maxMinutes
-                
+                if x % self.blockSize == (self.blockSize - 1):
+                    minutes = minutes * self.recoveryFactor
+                    if minutes < self.minMinutes:
+                        minutes = self.minMinutes
+                else:
+                    minutes = minutes * self.buildFactor
+                    if minutes > self.maxMinutes:
+                        minutes = self.maxMinutes
+
             weekDetails = dict()
             weekDetails["totalMinutes"] = int(minutes)
             self.plan.append(weekDetails)
-
+            print(weekDetails)
         return self.plan
 
     def week(self, value):
